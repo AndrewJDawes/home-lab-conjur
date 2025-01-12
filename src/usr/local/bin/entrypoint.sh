@@ -7,15 +7,11 @@ if [ -z "$CONJUR_ADMIN_ACCOUNT" ]; then
     exit 1
 fi
 
-echo "CONJUR_ADMIN_ACCOUNT: ${CONJUR_ADMIN_ACCOUNT}"
-
 # assert that CONJUR_ADMIN_PASSWORD is set
 if [ -z "$CONJUR_ADMIN_PASSWORD" ]; then
     echo "CONJUR_ADMIN_PASSWORD is not set. Exiting..."
     exit 1
 fi
-
-echo "CONJUR_ADMIN_PASSWORD: ${CONJUR_ADMIN_PASSWORD}"
 
 # Start the service in the background
 echo "Starting the service..."
