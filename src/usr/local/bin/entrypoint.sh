@@ -22,15 +22,21 @@ SERVICE_PID=$!
 
 # Wait for the service to be ready (e.g., polling a health check or checking a port)
 echo "Waiting for the service to be ready..."
-while ! nc -z localhost 80; do
-    sleep 1
-done
+# while ! nc -z localhost 80; do
+#     sleep 1
+# done
+conjurctl wait
 echo "Service is ready!"
 
 # Run the CLI command
 echo "Running the CLI command..."
 echo -n "${CONJUR_ADMIN_PASSWORD}" | conjurctl account create --password-from-stdin --name "${CONJUR_ADMIN_ACCOUNT}"
 
+# Stop the service
+echo "Stopping the service..."
+kill "$SERVICE_PID"
+
+conjurctl server
 # Keep the service running
-echo "Keeping the service running..."
-wait "$SERVICE_PID"
+# echo "Keeping the service running..."
+# wait "$SERVICE_PID"
