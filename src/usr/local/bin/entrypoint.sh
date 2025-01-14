@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-set -e
-
 # assert that CONJUR_ADMIN_ACCOUNT is set
 if [ -z "$CONJUR_ADMIN_ACCOUNT" ]; then
     echo "CONJUR_ADMIN_ACCOUNT is not set. Exiting..."
