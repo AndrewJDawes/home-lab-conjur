@@ -30,7 +30,7 @@ echo "Service is ready!"
 
 # Run the CLI command
 echo "Running the CLI command..."
-echo -n "${CONJUR_ADMIN_PASSWORD}" | conjurctl account create --password-from-stdin --name "${CONJUR_ADMIN_ACCOUNT}"
+echo -n "${CONJUR_ADMIN_PASSWORD}" | conjurctl account create --password-from-stdin --name "${CONJUR_ADMIN_ACCOUNT} || echo "Failed to create account""
 
 # Stop the service
 echo "Stopping the service..."
