@@ -37,10 +37,10 @@ echo -n "${CONJUR_ADMIN_PASSWORD}" | conjurctl account create --password-from-st
 # forground the SERVICE_PID
 # This is needed to keep the service running
 # fg "$SERVICE_PID"
-echo "Foregrounding the service..."
-fg
+# echo "Foregrounding the service..."
+# fg
 
 # conjurctl server
 # Keep the service running
-# echo "Keeping the service running..."
-# wait "$SERVICE_PID"
+echo "Keeping the service running..."
+wait "$SERVICE_PID"
