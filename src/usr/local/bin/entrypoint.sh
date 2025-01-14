@@ -31,10 +31,16 @@ echo "Running the CLI command..."
 echo -n "${CONJUR_ADMIN_PASSWORD}" | conjurctl account create --password-from-stdin --name "${CONJUR_ADMIN_ACCOUNT}" || echo "Failed to create account"
 
 # Stop the service
-echo "Stopping the service..."
-kill "$SERVICE_PID"
+# echo "Stopping the service..."
+# kill "$SERVICE_PID"
 
-conjurctl server
+# forground the SERVICE_PID
+# This is needed to keep the service running
+# fg "$SERVICE_PID"
+echo "Foregrounding the service..."
+fg
+
+# conjurctl server
 # Keep the service running
 # echo "Keeping the service running..."
 # wait "$SERVICE_PID"
