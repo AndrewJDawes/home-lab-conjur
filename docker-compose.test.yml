@@ -1,0 +1,37 @@
+services:
+    conjur_db:
+        image: postgres:15
+        environment:
+            POSTGRES_HOST_AUTH_METHOD: password
+            POSTGRES_PASSWORD: "database_password"
+        restart: unless-stopped
+        volumes:
+            - conjur_db_data:/var/lib/postgresql/data
+
+    conjur:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            DATABASE_URL: "postgres://postgres:database_password@conjur_db/postgres"
+            # docker run --rm cyberark/conjur data-key generate
+            CONJUR_DATA_KEY: "D71VUZQnpOlyqa5qftqfE3yKB4TFvRdtSnTtZo46WJA="
+            CONJUR_ADMIN_ACCOUNT: admin
+            CONJUR_ADMIN_PASSWORD: "ADMIN_password1234567890!"
+            CONJUR_AUTHENTICATORS: "authn"
+            CONJUR_TELEMETRY_ENABLED: "false"
+        ports:
+            - "8050:80"
+        depends_on:
+            - conjur_db
+        restart: unless-stopped
+    manifest:
+        image: ghcr.io/andrewjdawes/manifest:v0.1
+        environment:
+            CONJUR_API_URL: http://conjur:80
+            COOKIE_HTTP_SECURE: "false"
+            PORT: "80"
+        ports:
+            - "8051:80"
+volumes:
+    conjur_db_data:
