@@ -1,0 +1,64 @@
+services:
+    conjur_db:
+        image: postgres:15
+        environment:
+            POSTGRES_HOST_AUTH_METHOD: password
+            POSTGRES_USER: "${DATABASE_USER}"
+            POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
+        restart: unless-stopped
+        volumes:
+            - conjur_db_data:/var/lib/postgresql/data
+        networks:
+            - conjur_internal
+    conjur:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            DATABASE_URL: "postgres://${DATABASE_USER}:${DATABASE_PASSWORD}@conjur_db/postgres"
+            # docker run --rm cyberark/conjur data-key generate
+            CONJUR_DATA_KEY: "${CONJUR_DATA_KEY}"
+            CONJUR_ORG_ACCOUNT: "${CONJUR_ORG_ACCOUNT}"
+            CONJUR_ADMIN_USER_PASSWORD: ${CONJUR_ADMIN_USER_PASSWORD}
+            CONJUR_AUTHENTICATORS: "authn"
+            CONJUR_TELEMETRY_ENABLED: "false"
+        ports:
+            - "8050:80"
+        depends_on:
+            - conjur_db
+        restart: unless-stopped
+        networks:
+            - conjur_internal
+            - conjur_external
+    manifest:
+        image: ghcr.io/andrewjdawes/manifest:v0.1
+        environment:
+            CONJUR_API_URL: http://conjur:80
+            COOKIE_HTTP_SECURE: "false"
+            PORT: "80"
+        ports:
+            - "8051:80"
+        networks:
+            - conjur_internal
+    conjur_cli:
+        image: cyberark/conjur-cli:8
+        entrypoint: sleep
+        command: infinity
+        networks:
+            - conjur_internal
+    pgadmin:
+        image: dpage/pgadmin4
+        environment:
+            PGADMIN_DEFAULT_EMAIL: "${PGADMIN_DEFAULT_EMAIL}"
+            PGADMIN_DEFAULT_PASSWORD: "${PGADMIN_DEFAULT_PASSWORD}"
+        ports:
+            - "8052:80"
+        networks:
+            - conjur_internal
+volumes:
+    conjur_db_data:
+networks:
+    conjur_external:
+        external: true
+    conjur_internal:
+        external: false

@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -e
-# assert that CONJUR_ADMIN_ACCOUNT is set
-if [ -z "$CONJUR_ADMIN_ACCOUNT" ]; then
-    echo "CONJUR_ADMIN_ACCOUNT is not set. Exiting..."
+# assert that CONJUR_ORG_ACCOUNT is set
+if [ -z "$CONJUR_ORG_ACCOUNT" ]; then
+    echo "CONJUR_ORG_ACCOUNT is not set. Exiting..."
     exit 1
 fi
 
-# assert that CONJUR_ADMIN_PASSWORD is set
-if [ -z "$CONJUR_ADMIN_PASSWORD" ]; then
-    echo "CONJUR_ADMIN_PASSWORD is not set. Exiting..."
+# assert that CONJUR_ADMIN_USER_PASSWORD is set
+if [ -z "$CONJUR_ADMIN_USER_PASSWORD" ]; then
+    echo "CONJUR_ADMIN_USER_PASSWORD is not set. Exiting..."
     exit 1
 fi
 
@@ -26,7 +26,7 @@ echo "Service is ready!"
 
 # Run the CLI command
 echo "Running the CLI command..."
-echo -n "${CONJUR_ADMIN_PASSWORD}" | (conjurctl account create --password-from-stdin --name "${CONJUR_ADMIN_ACCOUNT}" || echo "Failed to create account")
+echo -n "${CONJUR_ADMIN_USER_PASSWORD}" | (conjurctl account create --password-from-stdin --name "${CONJUR_ORG_ACCOUNT}" || echo "Failed to create account")
 
 # Keep the service running
 echo "Keeping the service running..."
