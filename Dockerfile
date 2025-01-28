@@ -1,8 +1,5 @@
 FROM cyberark/conjur AS base
 
-ARG LABEL_ORG_OPENCONTAINERS_IMAGE_TITLE=""
-
-LABEL org.opencontainers.image.source=${LABEL_ORG_OPENCONTAINERS_IMAGE_SOURCE}
 # Install Tini if not already included
 RUN apt-get update && apt-get install -y tini
 
