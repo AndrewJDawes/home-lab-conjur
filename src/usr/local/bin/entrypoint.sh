@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
 set -e
+
+ENTRYPOINT_ERROR=false
 # assert that CONJUR_ORG_ACCOUNT is set
 if [ -z "$CONJUR_ORG_ACCOUNT" ]; then
-    echo "CONJUR_ORG_ACCOUNT is not set. Exiting..."
-    exit 1
+    echo "CONJUR_ORG_ACCOUNT is required"
+    ENTRYPOINT_ERROR=true
 fi
 
 # assert that CONJUR_ADMIN_USER_PASSWORD is set
 if [ -z "$CONJUR_ADMIN_USER_PASSWORD" ]; then
-    echo "CONJUR_ADMIN_USER_PASSWORD is not set. Exiting..."
+    echo "CONJUR_ADMIN_USER_PASSWORD is required"
+    ENTRYPOINT_ERROR=true
+fi
+
+# if ENTRYPOINT_ERROR is true, exit
+if [ "$ENTRYPOINT_ERROR" = true ]; then
     exit 1
 fi
 
