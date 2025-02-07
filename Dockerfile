@@ -9,3 +9,5 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Use Tini as the ENTRYPOINT
 ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/entrypoint.sh"]
+
+HEALTHCHECK CMD ["conjurctl", "wait"]
