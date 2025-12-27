@@ -1,4 +1,4 @@
-FROM cyberark/conjur AS base
+FROM cyberark/conjur:1 AS base
 
 # Install Tini if not already included
 RUN apt-get update && apt-get install -y tini
